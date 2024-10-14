@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Описание страницы">
+        <link rel="icon" href="fav.ico" type="image">
+        <title>Наши Рецепты</title>
+    </head>
+
+    <body>
+        {% include '../header.html' %}
+
+        <div class="ml-5 mt-5 mr-5">
+            <h1>Рецепты</h1>
+            <div class="mt-5 list-group">
+                {% for recipe in recipes %}
+                    <a class="list-group-item list-group-item-action" href="/recipe/{{recipe.id}}">
+                        {{ recipe.name }}
+                    </a>
+                {% empty %}
+                    <p class="text-center text-danger font-weight-bold">Нет рецептов :(</p>
+                {% endfor %}
+            </div>
+        </div>
+    </body>
+</html>

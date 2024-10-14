@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Описание страницы">
+        <link rel="icon" href="fav.ico" type="image">
+        <title>Наши Рецепты</title>
+
+        <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    </head>
+
+    <body>
+        {% include '../header.html' %}
+
+        <div class="ml-5 mr-5 mt-5">
+            <h1>Рецепт</h1>
+            <h2>{{ recipe.name }}</h2>
+
+            <table class="mt-5 w-50 table table-striped table-dark">
+              <thead>
+                <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Название</th>
+                  <th scope="col">Вес</th>
+                  <th scope="col">Сырой вес</th>
+                  <th scope="col">Цена</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                {% for ingredient in recipe.ingredients %}
+                    <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td>{{ ingredient.name }}</td>
+                        <td>{{ ingredient.weight }}</td>
+                        <td>{{ ingredient.raw_weight }}</td>
+                        <td>{{ ingredient.price }}</td>
+                    </tr>
+                {% empty %}
+                    <span>Нет ингредиентов :(</span>
+                {% endfor %}
+              </tbody>
+            </table>
+        </div>
+    </body>
+</html>
