@@ -1,10 +1,10 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from .constants import recipes
-from .utils import get_recipe_by_id
+from .models import Ingredient, Recipe
 
 
 def index(request):
+    recipes = Recipe.objects.all()
     t_recipes = recipes
     context = {
         'recipes': t_recipes,
@@ -26,12 +26,14 @@ def about(request):
 
 
 def recipe_detail(request, pk):
-    recipe = get_recipe_by_id(pk, recipes)
+    recipe = Recipe.objects.get(pk=pk)
+    ingredients = recipe.ingredients.all()
     if not recipe:
         return Http404("No such recipe found")
 
     context = {
         'recipe': recipe,
+        'ingredients': ingredients
     }
 
     return render(

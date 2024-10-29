@@ -28,7 +28,7 @@
               </thead>
 
               <tbody>
-                {% for ingredient in recipe.ingredients %}
+                {% for ingredient in ingredients %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ ingredient.name }}</td>
