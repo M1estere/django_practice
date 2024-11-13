@@ -31,9 +31,14 @@ def recipe_detail(request, pk):
     if not recipe:
         return Http404("No such recipe found")
 
+    total_price = sum([ingredient.price * ingredient.weight for ingredient in ingredients])
+    total_weight = sum([ingredient.weight for ingredient in ingredients])
+
     context = {
         'recipe': recipe,
-        'ingredients': ingredients
+        'ingredients': ingredients,
+        'total_price': total_price,
+        'total_weight': total_weight
     }
 
     return render(
