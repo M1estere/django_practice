@@ -26,7 +26,6 @@
                   <th scope="col">#</th>
                   <th scope="col">Название</th>
                   <th scope="col">Вес</th>
-                  <th scope="col">Сырой вес</th>
                   <th scope="col">Цена</th>
                 </tr>
               </thead>
@@ -36,8 +35,7 @@
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{ ingredient.name }}</td>
-                        <td>{{ ingredient.weight }}</td>
-                        <td>{{ ingredient.raw_weight }}</td>
+                        <td>{{ingredient.measure }} {{ingredient.measure_val }}</td>
                         <td>{{ ingredient.price }}</td>
                     </tr>
                 {% empty %}

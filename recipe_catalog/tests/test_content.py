@@ -7,9 +7,9 @@ from ..models import Ingredient, Recipe, RecipeIngredients
 class TestRecipes(TestCase):
     """Тесты страницы с рецептами"""
     INGREDIENTS = [
-        dict(name="Ingredient 1", price=10, weight=15, raw_weight=35),
-        dict(name="Ingredient 2", price=15, weight=50, raw_weight=70),
-        dict(name="Ingredient 3", price=25, weight=100, raw_weight=120)
+        dict(name="Ingredient 1", price=10, measure=10, measure_weight=15),
+        dict(name="Ingredient 2", price=15, measure=15, measure_weight=3),
+        dict(name="Ingredient 3", price=25, measure=22, measure_weight=17)
     ]
 
     def setUp(self):
@@ -17,13 +17,13 @@ class TestRecipes(TestCase):
         self.recipe = Recipe.objects.create(name="Test")
 
         for ingredient in self.INGREDIENTS:
-            self.ingredients.append(Ingredient.objects.create(name=ingredient["name"], weight=ingredient['weight'], raw_weight=ingredient['raw_weight'], price=ingredient["price"]))
+            self.ingredients.append(Ingredient.objects.create(name=ingredient["name"], price=ingredient["price"], measure_val=ingredient["measure"]))
 
         for ingredient, ingredient_class in zip(self.INGREDIENTS, self.ingredients):
-            RecipeIngredients.objects.create(recipe=self.recipe, ingredient=ingredient_class)
+            RecipeIngredients.objects.create(recipe=self.recipe, ingredient=ingredient_class, measure=ingredient['measure'], measure_weight=ingredient['measure_weight'])
 
-        self.total_price = sum([ingredient['weight'] * ingredient['price'] for ingredient in self.INGREDIENTS])
-        self.total_weight = sum([ingredient['weight'] for ingredient in self.INGREDIENTS])
+        self.total_price = sum([ingredient['measure'] * ingredient['price'] for ingredient in self.INGREDIENTS])
+        self.total_weight = sum([ingredient['measure_weight'] * ingredient['measure'] for ingredient in self.INGREDIENTS])
 
         self.client = Client()
 

@@ -1,6 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render
-from .models import Ingredient, Recipe
+from .models import Ingredient, Recipe, RecipeIngredients
 
 
 def index(request):
@@ -27,16 +27,31 @@ def about(request):
 
 def recipe_detail(request, pk):
     recipe = Recipe.objects.get(pk=pk)
-    ingredients = recipe.ingredients.all()
     if not recipe:
         return Http404("No such recipe found")
 
-    total_price = sum([ingredient.price * ingredient.weight for ingredient in ingredients])
-    total_weight = sum([ingredient.weight for ingredient in ingredients])
+    ingredients = RecipeIngredients.objects.filter(recipe=recipe)
+
+    target_ingredients = list()
+    total_price = 0
+    total_weight = 0
+    for ingredient in ingredients:
+        ingredient_price = ingredient.measure * ingredient.ingredient.price
+
+        total_price += ingredient_price
+        total_weight += ingredient.measure_weight * ingredient.measure
+
+        target_ingredients.append({
+            'id': ingredient.ingredient.id,
+            'name': ingredient.ingredient.name,
+            'measure_val': ingredient.ingredient.measure_val,
+            'measure': ingredient.measure,
+            'price': ingredient_price
+        })
 
     context = {
         'recipe': recipe,
-        'ingredients': ingredients,
+        'ingredients': target_ingredients,
         'total_price': total_price,
         'total_weight': total_weight
     }
