@@ -1,0 +1,10 @@
+{% include '../header.html' %}
+
+<h1>Редактирование ингредиента: {{ ingredient.ingredient.name }}</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+</form>
+<a href="{% url 'recipe_catalog:edit_recipe' recipe.id %}" class="btn btn-secondary mt-3">Назад к рецепту</a>

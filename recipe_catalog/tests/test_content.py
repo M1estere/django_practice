@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from django.urls import reverse
 
@@ -14,7 +15,10 @@ class TestRecipes(TestCase):
 
     def setUp(self):
         self.ingredients = []
-        self.recipe = Recipe.objects.create(name="Test")
+        self.user = User.objects.create_user(username="testuser", password="testpassword")
+        self.client = Client()
+        self.client.login(username="testuser", password="testpassword")
+        self.recipe = Recipe.objects.create(name="Test", author=self.user)
 
         for ingredient in self.INGREDIENTS:
             self.ingredients.append(Ingredient.objects.create(name=ingredient["name"], price=ingredient["price"], measure_val=ingredient["measure"]))
@@ -55,3 +59,5 @@ class TestRecipes(TestCase):
         """Проверка расчета суммарной стоимости"""
         response = self.get_response()
         self.assertEqual(response.context['total_price'], self.total_price)
+
+
